@@ -13,11 +13,11 @@ router.get('/consultarJuegos', (req, res) => {
     });
 });
 
-router.get('/juegoId/:id', (req, res) => {
-    const { id } = req.params;
-    mysqlConexion.query('SELECT * FROM juegos WHERE id=?', [id], (err, rows, fields) => {
+router.get('/juegoId/:titulo', (req, res) => {
+    const { titulo } = req.params;
+    mysqlConexion.query('SELECT * FROM juegos WHERE titulo=?', [titulo], (err, rows, fields) => {
         if (!err) {
-            res.json(rows[0]);
+            res.json(rows);
         } else {
             console.log(err);
         }
@@ -25,11 +25,11 @@ router.get('/juegoId/:id', (req, res) => {
 });
 
 router.post('/importar', (req, res) => {
-    const { titulo, descripcion, link } = req.body;
+    const { titulo, descripcion, link, imagen } = req.body;
     const query = `
-    INSERT INTO juegos (titulo,descripcion,link) VALUES (?,?,?);
+    INSERT INTO juegos (titulo,descripcion,link,imagen) VALUES (?,?,?,?);
     `;
-    mysqlConexion.query(query, [titulo, descripcion, link], (err, rows, fields) => {
+    mysqlConexion.query(query, [titulo, descripcion, link,imagen], (err, rows, fields) => {
         if (!err) {
             res.json({ Status: 'Juego importado correctamente' });
         } else {
